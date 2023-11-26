@@ -1,3 +1,4 @@
+import 'package:blockmomochainapp/components/BmcBottomNavigationBar.dart';
 import 'package:blockmomochainapp/components/BmcButtonComponent.dart';
 import 'package:blockmomochainapp/components/TransactionComponent.dart';
 import 'package:blockmomochainapp/controllers/transaction_controller.dart';
@@ -17,22 +18,75 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
-        leading: ListTile(
-          leading: CircleAvatar(child: SvgPicture.asset('assets/svg/ic_user.svg'),radius: 18,backgroundColor: AppColors.grey3Color,),
-          title : Text('611 999 00',style: TextStyle(fontSize: AppStyle.size12,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
-          subtitle : Row(
+        leadingWidth: 200,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Row(
             children: [
-              Text('Mon compte',style: TextStyle(fontSize: AppStyle.size16,fontWeight: FontWeight.w600,fontFamily: 'MTN Brighter Sans'),),
-            SizedBox(width: 4,),
-              Icon(Icons.keyboard_arrow_down_sharp,color: Colors.white,)
+              CircleAvatar(child: SvgPicture.asset('assets/svg/ic_user.svg'),radius: 21,backgroundColor: AppColors.grey3Color.withOpacity(0.3),),
+              SizedBox(width: 6,),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   Text('611 999 00',style: TextStyle(fontSize: AppStyle.size12,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
+                  SizedBox(height: 4,),
+                  Row(
+                        children: [
+                          Text('Mon compte',style: TextStyle(fontSize: AppStyle.size16,fontWeight: FontWeight.w600,fontFamily: 'MTN Brighter Sans'),),
+                        SizedBox(width: 2,),
+                          Icon(Icons.keyboard_arrow_down_sharp,color: Colors.white,)
+                        ],
+                      ),
+                ],
+              )
             ],
           ),
         ),
+        // leading: ListTile(
+        //   leading: CircleAvatar(child: SvgPicture.asset('assets/svg/ic_user.svg'),radius: 18,backgroundColor: AppColors.grey3Color,),
+        //   title : Text('611 999 00',style: TextStyle(fontSize: AppStyle.size12,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
+        //   subtitle : Row(
+        //     children: [
+        //       Text('Mon compte',style: TextStyle(fontSize: AppStyle.size16,fontWeight: FontWeight.w600,fontFamily: 'MTN Brighter Sans'),),
+        //     SizedBox(width: 4,),
+        //       Icon(Icons.keyboard_arrow_down_sharp,color: Colors.white,)
+        //     ],
+        //   ),
+        // ),
         actions: [
           CircleAvatar(backgroundColor: Colors.white,radius: 15.5,child: CircleAvatar(radius: 10,backgroundColor : AppColors.green2Color.withOpacity(0.3),child: CircleAvatar(radius: 5,backgroundColor : AppColors.green2Color),),),
           SizedBox(width: 15,),
         ],
       ),
+      bottomNavigationBar: BmcBottomNavigationBar(),
+      floatingActionButton: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.3,0.5,0.9],
+                colors: [
+                  AppColors.primColor.withOpacity(0.7),
+                  AppColors.primColor.withOpacity(0.2),
+                  Colors.white,
+                ]
+              )
+            ),
+          ),
+          CircleAvatar(child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SvgPicture.asset('assets/svg/ic_logo.svg'),
+          ),backgroundColor: AppColors.primaryColor,radius: 25.8,),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         child: Column(
           children: [

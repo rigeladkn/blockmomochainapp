@@ -72,6 +72,11 @@ flutter:
      - assets/svg/ic_send.svg
      - assets/svg/ic_send1.svg
      - assets/svg/ic_user.svg
+     - assets/svg/ic_home.svg
+     - assets/svg/ic_notification.svg
+     - assets/svg/ic_journal.svg
+     - assets/svg/ic_recompense.svg
+     - assets/svg/ic_logo.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
