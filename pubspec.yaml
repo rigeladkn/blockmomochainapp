@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   svg_flutter:
   get:
+  percent_indicator:
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,10 @@ flutter:
      - assets/svg/ic_journal.svg
      - assets/svg/ic_recompense.svg
      - assets/svg/ic_logo.svg
+     - assets/svg/ic_diamond.svg
+     - assets/svg/ic_star.svg
+     - assets/png/img_phone.png
+     - assets/png/img_casque.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
