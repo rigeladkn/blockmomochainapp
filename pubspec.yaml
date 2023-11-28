@@ -38,6 +38,8 @@ dependencies:
   svg_flutter:
   get:
   percent_indicator:
+  http:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
@@ -78,10 +80,13 @@ flutter:
      - assets/svg/ic_journal.svg
      - assets/svg/ic_recompense.svg
      - assets/svg/ic_logo.svg
+     - assets/svg/ic_logo1.svg
      - assets/svg/ic_diamond.svg
      - assets/svg/ic_star.svg
+     - assets/svg/ic_phone.svg
      - assets/png/img_phone.png
      - assets/png/img_casque.png
+     - assets/png/img_logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,3 +1,4 @@
+import 'package:blockmomochainapp/controllers/network_controller.dart';
 import 'package:blockmomochainapp/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,9 @@ class BmcAppbarComponent extends StatelessWidget implements   PreferredSizeWidge
         ),
       ),
       actions:  [
-        CircleAvatar(backgroundColor: Colors.white,radius: 15.5,child: CircleAvatar(radius: 10,backgroundColor : AppColors.green2Color.withOpacity(0.3),child: CircleAvatar(radius: 5,backgroundColor : AppColors.green2Color),),),
+        GetBuilder<NetworkController>(builder: (NetworkController networkController){
+          return CircleAvatar(backgroundColor: Colors.white,radius: 15.5,child: CircleAvatar(radius: 10,backgroundColor : networkController.network == 'UP' ? AppColors.green2Color.withOpacity(0.3) : networkController.network == 'DOWN' ? AppColors.redColor.withOpacity(0.3) : Colors.grey.withOpacity(0.3),child: CircleAvatar(radius: 5,backgroundColor : networkController.network == 'UP' ? AppColors.green2Color : networkController.network == 'DOWN' ? AppColors.redColor : Colors.grey),),);
+        }),
         SizedBox(width: 15,),
       ],
     );

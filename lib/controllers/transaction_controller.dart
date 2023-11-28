@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:blockmomochainapp/services/services.dart';
 import 'package:get/get.dart';
 
 class TransactionController extends GetxController{
-  List<Map<String,dynamic>> transactions = [
+  List<dynamic> transactions = [
     {
       'type' : 'TRANSFERT',
       'name' : 'HOUNSOU Martunin',
@@ -35,4 +39,13 @@ class TransactionController extends GetxController{
       'status' : 'ACCEPTED',
     },
   ];
+
+  Future<void> getTransactions() async {
+    log('IN GET TRANSACTIONS');
+    var trans = await Services().getUserTransactions();
+    log('TRANS $trans');
+    // transactions = trans;
+    // log('TRANSACTIONS $transactions');
+    update();
+  }
 }

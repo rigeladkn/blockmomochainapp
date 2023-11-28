@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:blockmomochainapp/components/BmcBottomNavigationBar.dart';
 import 'package:blockmomochainapp/components/BmcAppbarComponent.dart';
 import 'package:blockmomochainapp/components/BmcButtonComponent.dart';
 import 'package:blockmomochainapp/components/TransactionComponent.dart';
 import 'package:blockmomochainapp/controllers/navigation_controller.dart';
+import 'package:blockmomochainapp/controllers/network_controller.dart';
 import 'package:blockmomochainapp/controllers/transaction_controller.dart';
 import 'package:blockmomochainapp/screens/recompense_screen.dart';
 import 'package:blockmomochainapp/styles/colors.dart';
@@ -15,10 +19,34 @@ import 'package:svg_flutter/svg.dart';
 import 'journal_screen.dart';
 import 'notification_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   TransactionController transactionController = Get.put(TransactionController());
   NavigationController navigationController = Get.put(NavigationController());
+  NetworkController networkController = Get.put(NetworkController());
+
+  void setNetworkStatus() {
+    // Timer.periodic(Duration(seconds: 5), (timer) {
+      networkController.getNetworkStatus();
+    // });
+  }
+
+  void getTransactions(){
+    transactionController.getTransactions();
+    log(transactionController.transactions.toString());
+  }
+
+  @override
+  void initState() {
+    setNetworkStatus();
+    getTransactions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,4 +212,5 @@ class HomeScreen extends StatelessWidget {
       }
     );
   }
+
 }
