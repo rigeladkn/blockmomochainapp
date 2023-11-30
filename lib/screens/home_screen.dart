@@ -9,6 +9,7 @@ import 'package:blockmomochainapp/controllers/navigation_controller.dart';
 import 'package:blockmomochainapp/controllers/network_controller.dart';
 import 'package:blockmomochainapp/controllers/transaction_controller.dart';
 import 'package:blockmomochainapp/screens/recompense_screen.dart';
+import 'package:blockmomochainapp/screens/transfert_screen.dart';
 import 'package:blockmomochainapp/styles/colors.dart';
 import 'package:blockmomochainapp/styles/style.dart';
 import 'package:flutter/cupertino.dart';
@@ -144,24 +145,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 21,),
                       Row(
                         children: [
-                          Expanded(child: Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    border: Border.all(color: AppColors.grey2Color)
+                          Expanded(child: GestureDetector(
+                            onTap: (){
+                              Get.to(()=>TransfertScreen());
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(color: AppColors.grey2Color)
+                                  ),
+                                  padding: EdgeInsets.all(20),
+                                  child: Center(
+                                    child: SvgPicture.asset('assets/svg/ic_send.svg'),
+                                  ),
                                 ),
-                                padding: EdgeInsets.all(20),
-                                child: Center(
-                                  child: SvgPicture.asset('assets/svg/ic_send.svg'),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(10.0,15,10,5),
+                                  child: Text("Envoyer à un abonné mobile money",textAlign : TextAlign.center,style: TextStyle(fontWeight: FontWeight.w400,fontSize : AppStyle.size12,height : 1.5,fontFamily: 'MTN Brighter Sans'),),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(10.0,15,10,5),
-                                child: Text("Envoyer à un abonné mobile money",textAlign : TextAlign.center,style: TextStyle(fontWeight: FontWeight.w400,fontSize : AppStyle.size12,height : 1.5,fontFamily: 'MTN Brighter Sans'),),
-                              ),
 
-                            ],
+                              ],
+                            ),
                           )),
                           SizedBox(width: 20,),
                           Expanded(child: Column(

@@ -90,17 +90,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                       }
                                       else{
-                                        Loader.showLoader(context);
-                                        var resp = await authController.login();
-                                        log('RESP IN LOGIN $resp');
-                                        Loader.offLoader(context);
-                                        if(resp['success']){
-                                          Get.to(()=>HomeScreen());
-                                        }
-                                        else{
-                                          Loader.offLoader(context);
-                                          await ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Informations de connexion incorrectes',style: TextStyle(color: Colors.white,fontSize: 12),)));
-                                        }
+                                        Get.to(()=>HomeScreen());
+
+                                        // Loader.showLoader(context);
+                                        // var resp = await authController.login();
+                                        // log('RESP IN LOGIN $resp');
+                                        // Loader.offLoader(context);
+                                        // if(resp['success']){
+                                        //   Get.to(()=>HomeScreen());
+                                        // }
+                                        // else{
+                                        //   Loader.offLoader(context);
+                                        //   await ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Informations de connexion incorrectes',style: TextStyle(color: Colors.white,fontSize: 12),)));
+                                        // }
                                       }
                                     },),
                                   ),

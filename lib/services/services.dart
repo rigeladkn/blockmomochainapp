@@ -71,9 +71,31 @@ class Services {
   }
   //---------------- OPERATIONS ----------------------------
 
-  transfert(){
+  Future<dynamic> makeTransfert(receiver,amount) async {
     var headers =  getHeaders();
-
+    try{
+      var url = Uri.parse(API_BASE_URL + '/api/auth/login');
+      var body = {
+        'receiver' : receiver,
+        'amount' : amount,
+        'type' : 'TRANSFERT'
+      };
+      var response = await http.post(url,body: body,headers: headers);
+      var data = await jsonDecode(jsonEncode(response.body));
+      log(body.toString());
+      if(response.statusCode == 201 || response.statusCode == 200){
+        log(data.toString());
+        return data;
+      }
+      else{
+        return {'success' : false,'reason' : data['message']};
+      }
+    }
+    catch(e){
+      log('ERROR => $e');
+      return {'success' : false,'reason' : 'Une erreur a été rencontrée'};
+      throw Error();
+    }
   }
 
   getHeaders() async {

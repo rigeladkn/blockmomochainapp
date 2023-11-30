@@ -37,7 +37,7 @@ class BmcButtonComponent extends StatelessWidget {
           children: [
             leftIcon ?? SizedBox(),
             leftIcon != null ? SizedBox(width: 8,) : SizedBox(),
-            Text(text,style: style ?? TextStyle(fontSize: AppStyle.size16,fontWeight: FontWeight.w500,fontFamily: 'MTN Brighter Sans',color: isTransparentButton! ? Colors.white : isYellowButton! ? Colors.black : AppColors.primaryColor),),
+            Text(text,style: style ?? TextStyle(fontSize: AppStyle.size16,fontWeight: FontWeight.w500,fontFamily: 'MTN Brighter Sans',color: isTransparentButton! ? Colors.white : isYellowButton! ? Colors.black : Colors.white),),
           ],
         ),),
       ),

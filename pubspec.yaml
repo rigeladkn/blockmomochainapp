@@ -82,6 +82,7 @@ flutter:
      - assets/svg/ic_logo.svg
      - assets/svg/ic_logo1.svg
      - assets/svg/ic_diamond.svg
+     - assets/svg/ic_contacts.svg
      - assets/svg/ic_star.svg
      - assets/svg/ic_phone.svg
      - assets/png/img_phone.png
