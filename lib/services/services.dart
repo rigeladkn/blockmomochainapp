@@ -72,12 +72,13 @@ class Services {
   //---------------- OPERATIONS ----------------------------
 
   Future<dynamic> makeTransfert(receiver,amount) async {
-    var headers =  getHeaders();
+    var headers =  await getHeaders();
+    log('HEADERS $headers');
     try{
-      var url = Uri.parse(API_BASE_URL + '/api/auth/login');
+      var url = Uri.parse(API_BASE_URL + '/api/transactions');
       var body = {
         'receiver' : receiver,
-        'amount' : amount,
+        'amount' : amount.toString(),
         'type' : 'TRANSFERT'
       };
       var response = await http.post(url,body: body,headers: headers);
@@ -88,17 +89,16 @@ class Services {
         return data;
       }
       else{
-        return {'success' : false,'reason' : data['message']};
+        return data;
       }
     }
     catch(e){
       log('ERROR => $e');
-      return {'success' : false,'reason' : 'Une erreur a été rencontrée'};
-      throw Error();
+      return {'success' : false,'message' : "${e}"};
     }
   }
 
-  getHeaders() async {
+  Future<Map<String, String>> getHeaders() async {
     var prefs = await Helpers.getSharedPrefs();
     var token = prefs.getString('token');
     if(token != null){
@@ -106,6 +106,56 @@ class Services {
       return {
         "Authorization" : 'Bearer ' + token
       };
+    }
+    else{
+      return {
+        "Authorization" : 'Bearer '
+      };
+    }
+  }
+
+  getUserProfile() async {
+    try{
+        var response = await http.get(Uri.parse(API_BASE_URL + '/api/users/profile'),headers: await getHeaders());
+        log(response.body.toString());
+        if(response.statusCode == 200){
+          var data = await jsonDecode(response.body);
+          return data;
+        }
+        else if(response.statusCode == 401){
+          log('ERROR NO TOKEN');
+          return [];
+        }
+        else{
+        return [];
+        }
+    }
+    catch(e){
+        log('ERROR $e');
+        return [];
+    }
+  }
+
+  getUserBalance() async {
+    var data;
+    try{
+      var response = await http.get(Uri.parse(API_BASE_URL + '/api/users/balance'),headers: await getHeaders());
+      log(response.body.toString());
+      if(response.statusCode == 200){
+        data = await jsonDecode(response.body);
+        return data['balance'];
+      }
+      else if(response.statusCode == 401){
+        log('ERROR NO TOKEN');
+        return 0;
+      }
+      else{
+        return 0;
+      }
+    }
+    catch(e){
+      log('ERROR $e');
+      return 0;
     }
   }
 

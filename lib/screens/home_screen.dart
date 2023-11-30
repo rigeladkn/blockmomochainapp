@@ -8,6 +8,9 @@ import 'package:blockmomochainapp/components/TransactionComponent.dart';
 import 'package:blockmomochainapp/controllers/navigation_controller.dart';
 import 'package:blockmomochainapp/controllers/network_controller.dart';
 import 'package:blockmomochainapp/controllers/transaction_controller.dart';
+import 'package:blockmomochainapp/controllers/user_controller.dart';
+import 'package:blockmomochainapp/helpers/helpers.dart';
+import 'package:blockmomochainapp/models/Transaction.dart';
 import 'package:blockmomochainapp/screens/recompense_screen.dart';
 import 'package:blockmomochainapp/screens/transfert_screen.dart';
 import 'package:blockmomochainapp/styles/colors.dart';
@@ -17,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:svg_flutter/svg.dart';
 
+import '../widgets/TransactionsWidget.dart';
 import 'journal_screen.dart';
 import 'notification_screen.dart';
 
@@ -27,9 +31,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TransactionController transactionController = Get.put(TransactionController());
+  // TransactionController transactionController = Get.put(TransactionController());
   NavigationController navigationController = Get.put(NavigationController());
   NetworkController networkController = Get.put(NetworkController());
+  UserController userController = Get.put(UserController());
 
   void setNetworkStatus() {
     // Timer.periodic(Duration(seconds: 5), (timer) {
@@ -37,15 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
     // });
   }
 
-  void getTransactions(){
-    transactionController.getTransactions();
-    log(transactionController.transactions.toString());
+
+
+  void getUserBalance(){
+    userController.getUserBalance();
+    log(userController.balance.toString());
   }
 
   @override
   void initState() {
     setNetworkStatus();
-    getTransactions();
+    getUserBalance();
     super.initState();
   }
 
@@ -114,7 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 1,),
                             Row(
                               children: [
-                                Text('30 000',style: TextStyle(fontSize: AppStyle.size48,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans'),),
+                                GetBuilder<UserController>(builder: (UserController userController){
+                                  return Text(Helpers.reformatIntToPriceString(userController.balance),style: TextStyle(fontSize: AppStyle.size48,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans'),);
+                                }),
                                 Transform.translate(
                                     offset: Offset(3, -10),
                                     child: Text("CFA",style: TextStyle(fontSize: AppStyle.size24,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans'),)),
@@ -125,7 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Dernière transaction',style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
-                                Text('15/02/23',style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
+                                GetBuilder<TransactionController>(builder: (TransactionController transactionController){
+                                  return Text(Helpers.formatDate(transactionController.transactions[0]["createdAt"]),style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),);
+                                }),
                               ],
                             ),
                           ],
@@ -196,18 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 30,),
                       Text('Vos transactions récentes',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size16,fontFamily: 'MTN Brighter Sans'),),
                       SizedBox(height: 16,),
-                      GetBuilder<TransactionController>(builder: (  transactionController){
-                        return Container(
-                          height: 150.0 * transactionController.transactions.length,
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: transactionController.transactions.length,
-                              itemBuilder: (context,index){
-                                return TransactionComponent(transaction: transactionController.transactions[index],);
-                              }),
-                        );
-                      }),
+                      TransactionsWidget(limit:4),
                     ],
                   ),
                 )

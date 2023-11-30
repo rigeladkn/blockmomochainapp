@@ -5,6 +5,7 @@ import 'package:blockmomochainapp/components/BmcInputComponent.dart';
 import 'package:blockmomochainapp/controllers/network_controller.dart';
 import 'package:blockmomochainapp/controllers/transfert_controller.dart';
 import 'package:blockmomochainapp/helpers/helpers.dart';
+import 'package:blockmomochainapp/screens/success_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -99,7 +100,7 @@ class _TransfertScreenState extends State<TransfertScreen> {
               Text("Vous voulez envoyer combien ?",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
               SizedBox(height: 7,),
               BmcInputComponent(isForOperation: true,isAmount : true,onChanged: (value){
-                transfertController.updateAmount(value);
+                transfertController.updateAmount(int.parse(value));
               }),
               SizedBox(height: 20,),
               Text("Entrer la raison de l’envoi",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
@@ -173,7 +174,17 @@ class _TransfertScreenState extends State<TransfertScreen> {
                 child: Text("Le service Mobile Money est actuellement hors service. Nous vous présentons nos services et vous rassurons de ce que le réseau sera très vite rétabli. \n\n Si vous êtes dans un cas pressant ou urgent d'envoi vers votre destinataire, vous pourrez toutefois effectuer cette transaction par le biais du réseau BlockMomoChain. Si vous disposez des fonds suffisants, votre transaction sera autorisée. Votre solde Momo sera déduit automatiquement dès que la panne réglée. MTN vous remercie de votre fidélité !",style: TextStyle(fontSize: AppStyle.size13,fontWeight: FontWeight.w400,height : 1.5,fontFamily: 'Robotto',color: AppColors.marronColor),),
               ),
               SizedBox(height: 15,),
-              BmcButtonComponent(text: 'Accepter et continuer', onTap: (){},isYellowButton: false,),
+              BmcButtonComponent(text: 'Accepter et continuer', onTap: () async {
+                var response = await transfertController.sendMoney();
+                if(response['success']){
+                  Get.to(()=>SuccessScreen());
+                }
+                else{
+                  showErrorDialog(response['message']);
+                }
+                
+                
+              },isYellowButton: false,),
             ],
           ),);
         });
@@ -181,5 +192,14 @@ class _TransfertScreenState extends State<TransfertScreen> {
 
 
     // }
+  }
+
+  void showErrorDialog(errorMessage) {
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        content: Text(errorMessage,),
+      );
+    });
+    
   }
 }

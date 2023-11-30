@@ -26,10 +26,12 @@ class AuthController extends GetxController{
 
   Future<dynamic> login() async {
     loading(true);
+    email = email.trim();
+    password = password.trim();
     var response = await Services().login(email,password,true);
     response = jsonDecode(response);
     if(response['success']){
-      Helpers.saveToken(response['token']);
+      await Helpers.saveToken(response['token']);
     }
     loading(false);
     return response;

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../components/TransactionComponent.dart';
 import '../controllers/transaction_controller.dart';
+import '../widgets/TransactionsWidget.dart';
 
 class JournalScreen extends StatelessWidget {
   TransactionController transactionController = Get.find();
@@ -52,18 +53,7 @@ class JournalScreen extends StatelessWidget {
              SizedBox(height: 30,),
              Text('Vos transactions',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size16,fontFamily: 'MTN Brighter Sans'),),
              SizedBox(height: 16,),
-             GetBuilder<TransactionController>(builder: (  transactionController){
-               return Container(
-                 height: 150.0 * transactionController.transactions.length,
-                 child: ListView.builder(
-                     shrinkWrap: true,
-                     physics: NeverScrollableScrollPhysics(),
-                     itemCount: transactionController.transactions.length,
-                     itemBuilder: (context,index){
-                       return TransactionComponent(transaction: transactionController.transactions[index],);
-                     }),
-               );
-             }),
+             TransactionsWidget()
            ],
          ),),
 

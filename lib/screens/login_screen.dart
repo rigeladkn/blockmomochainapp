@@ -90,19 +90,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                       }
                                       else{
-                                        Get.to(()=>HomeScreen());
+                                        // Get.to(()=>HomeScreen());
 
-                                        // Loader.showLoader(context);
-                                        // var resp = await authController.login();
-                                        // log('RESP IN LOGIN $resp');
-                                        // Loader.offLoader(context);
-                                        // if(resp['success']){
-                                        //   Get.to(()=>HomeScreen());
-                                        // }
-                                        // else{
-                                        //   Loader.offLoader(context);
-                                        //   await ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Informations de connexion incorrectes',style: TextStyle(color: Colors.white,fontSize: 12),)));
-                                        // }
+                                        Loader.showLoader(context);
+                                        var resp = await authController.login();
+                                        log('RESP IN LOGIN $resp');
+                                        Loader.offLoader(context);
+                                        if(resp['success']){
+                                          Get.to(()=>HomeScreen());
+                                        }
+                                        else{
+                                          Loader.offLoader(context);
+                                          await ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Informations de connexion incorrectes',style: TextStyle(color: Colors.white,fontSize: 12),)));
+                                        }
                                       }
                                     },),
                                   ),
@@ -129,8 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w500,fontFamily: 'MTN Brighter Sans',color: Colors.white ),
                             onTap: (){},),
                         ),
-
-
                       ],
                     ),
                   ],

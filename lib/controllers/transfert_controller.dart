@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:blockmomochainapp/services/services.dart';
@@ -18,13 +19,14 @@ class TransfertController extends GetxController{
       'phone' : '62979090'
     },
     {
-      "name" : 'Ezeckiel',
-      'phone' : '96179090'
+      "name" : 'Rigel',
+      'phone' : '97967879'
     }
   ];
 
   String receiverPhone = '';
   int amount = 0;
+  bool isLoading = false;
 
   updateReceiverPhone(phone){
     receiverPhone = phone;
@@ -36,11 +38,18 @@ class TransfertController extends GetxController{
     update();
   }
 
-  sendMoney(receiverPhone,amount) async {
+  Future<Map<String, dynamic>> sendMoney() async {
+    loading(true);
     var result = await Services().makeTransfert(receiverPhone, amount);
+    result = await jsonDecode(result);
+    log('RRR ' + result.toString());
+    loading(false);
     return result;
   }
 
-
+  loading(value){
+    isLoading = value;
+    update();
+  }
 
 }
