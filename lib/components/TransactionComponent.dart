@@ -51,12 +51,12 @@ class TransactionComponent extends StatelessWidget {
                 Text(Helpers.reformatIntToPriceString(transaction.amount) + ' CFA',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size15,fontFamily: 'MTN Brighter Sans'),),
                 Container(
                     padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
-                    decoration: BoxDecoration(color: ['RESOLVED','SUCCESS'].contains(transaction.status) ? AppColors.greenColor.withOpacity(0.1): AppColors.orangeColor.withOpacity(0.1),borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: ['RESOLVED','SUCCESS'].contains(transaction.resolvedStatus) ? AppColors.greenColor.withOpacity(0.1): AppColors.orangeColor.withOpacity(0.1),borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       children: [
-                        ['RESOLVED','SUCCESS'].contains(transaction.status)  ? Icon(Icons.check,color: AppColors.greenColor,) : Icon(Icons.refresh,color: AppColors.orangeColor,),
+                        ['RESOLVED','SUCCESS'].contains(transaction.resolvedStatus)  ? Icon(Icons.check,color: AppColors.greenColor,) : Icon(Icons.refresh,color: AppColors.orangeColor,),
                         SizedBox(width: 5,),
-                        Text(transaction.status == 'RESOLVED' ? 'Synchronisée' : transaction.status == 'SUCCESS' ? 'Réussie' : 'Acceptée',style: TextStyle(fontWeight: FontWeight.w400,fontSize : AppStyle.size12,fontFamily: 'MTN Brighter Sans',color: ['RESOLVED','SUCCESS'].contains(transaction.status) ? AppColors.greenColor : AppColors.orangeColor),),
+                        Text(transaction.resolvedStatus == 'RESOLVED' ? 'Synchronisée' : transaction.resolvedStatus == 'SUCCESS' ? 'Réussie' : 'Acceptée',style: TextStyle(fontWeight: FontWeight.w400,fontSize : AppStyle.size12,fontFamily: 'MTN Brighter Sans',color: ['RESOLVED','SUCCESS'].contains(transaction.resolvedStatus) ? AppColors.greenColor : AppColors.orangeColor),),
                       ],
                     )),
               ],

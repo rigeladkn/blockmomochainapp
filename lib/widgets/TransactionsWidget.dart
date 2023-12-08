@@ -17,11 +17,11 @@ class TransactionsWidget extends StatefulWidget {
 }
 
 class _TransactionsWidgetState extends State<TransactionsWidget> {
-  TransactionController transactionController = Get.put(TransactionController());
+  TransactionController transactionController = Get.find();
 
   void getTransactions(){
-    Future.delayed(Duration.zero,(){
-      transactionController.getTransactions();
+    Future.delayed(Duration.zero,() async {
+      await transactionController.getTransactions();
       log(transactionController.transactions.toString());
     });
   }
@@ -35,13 +35,13 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
     return  GetBuilder(
       builder: (TransactionController transactionController) {
         return Container(
-          height: widget.limit == 0 ? 150.0 * transactionController.transactions.length : widget.limit! <= transactionController.transactions.length ? widget.limit!.toDouble() * 150.0 : 150.0 * transactionController.transactions.length ,
-          child: transactionController.isLoading && transactionController.transactions.length == 0 ? Column(
+          height: widget.limit == 0 ? 150.0 * transactionController.transactions!.length : widget.limit! <= transactionController.transactions!.length ? widget.limit!.toDouble() * 150.0 : 150.0 * transactionController.transactions!.length ,
+          child: transactionController.isLoading && transactionController.transactions!.length == 0 ? Column(
             children: [
               SizedBox(height: 30,),
               CupertinoActivityIndicator(animating: true,color: AppColors.primaryColor,),
             ],
-          ) :  !transactionController.isLoading && transactionController.transactions.length == 0 ? Column(
+          ) :  !transactionController.isLoading && transactionController.transactions!.length == 0 ? Column(
             children: [
               SizedBox(height: 30,),
               Text('Aucune transaction pour le moment'),
@@ -49,9 +49,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
           ) : ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: widget.limit == 0 ? transactionController.transactions.length : widget.limit! <= transactionController.transactions.length ? widget.limit! : transactionController.transactions.length,
+              itemCount: widget.limit == 0 ? transactionController.transactions!.length : widget.limit! <= transactionController.transactions!.length ? widget.limit! : transactionController.transactions!.length,
               itemBuilder: (context,index){
-                return TransactionComponent(transaction: Transaction.fromJson(transactionController.transactions[index]),);
+                return TransactionComponent(transaction: Transaction.fromJson(transactionController.transactions![index]),);
               })
         );
       }

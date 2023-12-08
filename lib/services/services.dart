@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:blockmomochainapp/constants/constants.dart';
 import 'package:blockmomochainapp/helpers/helpers.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Services {
 
@@ -34,6 +35,11 @@ class Services {
       if(response.statusCode == 201 || response.statusCode == 200){
         var data = await jsonDecode(jsonEncode(response.body));
         log(data.toString());
+        SharedPreferences prefs = await Helpers.getSharedPrefs();
+        var user = await jsonDecode(data)['user'];
+        log(user.toString());
+        prefs.setString('userId', user['id']);
+        prefs.setString('phone', user['phone']);
         return data;
       }
       else{

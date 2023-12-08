@@ -1,4 +1,5 @@
 import 'package:blockmomochainapp/controllers/recompense_controller.dart';
+import 'package:blockmomochainapp/screens/quizz_screen.dart';
 import 'package:blockmomochainapp/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +102,7 @@ class RecompenseScreen extends StatelessWidget {
                     SizedBox(height: 20,),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
-                      child: Text('Gagnez des points en achetant les articles ci dessous.',style: TextStyle(fontSize: AppStyle.size13,fontWeight: FontWeight.w400,height : 1.5,fontFamily: 'Robotto',color: AppColors.marronColor),),
+                      child: Text('Gagnez des points en achetant des articles',style: TextStyle(fontSize: AppStyle.size13,fontWeight: FontWeight.w400,height : 1.5,fontFamily: 'Robotto',color: AppColors.marronColor),),
                       decoration: BoxDecoration(
                           color: AppColors.marronColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12)
@@ -111,17 +112,53 @@ class RecompenseScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 28,),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(padding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(gradient: LinearGradient(
+                      colors: [
+                        AppColors.red2Color,
+                        AppColors.redColor,
+                      ]
+                    ),borderRadius: BorderRadius.circular(17.0)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        strutStyle: StrutStyle(height: 1.5),
+                        text: TextSpan( text: 'JOUEZ au QUIZZ\n',
+                          style: TextStyle(fontSize: AppStyle.size20,fontWeight: FontWeight.w700,color: Colors.white),children: [
+                          TextSpan( text: 'et GAGNEZ\n',style: TextStyle(fontSize: AppStyle.size30,fontWeight: FontWeight.w700,color: Colors.white)),
+                            TextSpan( text: 'de l’argent\n',style: TextStyle(fontSize: AppStyle.size16,fontWeight: FontWeight.w500,color: Colors.white))
+                      ]),),
+                      SizedBox(height: 5,),
+                      GestureDetector(
+                        onTap: (){
+                          Get.to(()=>QuizzScreen());
+                        },
+                        child: Container(padding: EdgeInsets.symmetric(horizontal: 50,vertical: 15,),
+                          decoration: BoxDecoration(color: AppColors.primaryYelloColor,borderRadius: BorderRadius.circular(12.0)),
+                          child: Text('Jouer',style: TextStyle(fontSize: AppStyle.size13p94,fontWeight: FontWeight.w500,)),),
+                      )
+                    ],
+                  ),),
+                  Positioned(
+                      right: 20,
+                      child: Image.asset('assets/png/img_money.png',scale: 4,))
+                ],
+              ),
+              SizedBox(height: 30,),
               Text('Obtenez des points',style: TextStyle(fontSize: AppStyle.size18,fontWeight: FontWeight.w500,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
               SizedBox(height: 28,),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: recompenseController.articles.length,
-                    itemBuilder: (context,index){
-                  return BmcArticleComponent(recompenseController.articles[index]);
-                }),
-              )
+              ListView.builder(
+                shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: recompenseController.articles.length,
+                  itemBuilder: (context,index){
+                return BmcArticleComponent(recompenseController.articles[index]);
+              })
 
             ],
           ),

@@ -35,11 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
   NavigationController navigationController = Get.put(NavigationController());
   NetworkController networkController = Get.put(NetworkController());
   UserController userController = Get.put(UserController());
+  TransactionController transactionController = Get.put(TransactionController());
+
 
   void setNetworkStatus() {
-    // Timer.periodic(Duration(seconds: 5), (timer) {
-      networkController.getNetworkStatus();
+    Timer.periodic(Duration(seconds: 8), (timer) async {
+    // Future.delayed(Duration.zero,() async {
+      await networkController.getNetworkStatus();
     // });
+    });
   }
 
 
@@ -135,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text('Dernière transaction',style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
                                 GetBuilder<TransactionController>(builder: (TransactionController transactionController){
-                                  return Text(Helpers.formatDate(transactionController.transactions[0]["createdAt"]),style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),);
+                                  return !transactionController.isLoading && transactionController.transactions.length > 0  ? Text(Helpers.formatDate(transactionController.transactions[0]["createdAt"]),style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),) : Text('') ;
                                 }),
                               ],
                             ),
@@ -207,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 30,),
                       Text('Vos transactions récentes',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size16,fontFamily: 'MTN Brighter Sans'),),
                       SizedBox(height: 16,),
+
                       TransactionsWidget(limit:4),
                     ],
                   ),

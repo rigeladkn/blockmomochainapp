@@ -1,6 +1,7 @@
 import 'package:blockmomochainapp/styles/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../styles/style.dart';
 
@@ -11,8 +12,8 @@ class BmcArticleComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-
+      onTap: () async {
+          await launchUrl(Uri.parse(article['url']));
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),

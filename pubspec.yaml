@@ -40,7 +40,9 @@ dependencies:
   percent_indicator:
   http:
   shared_preferences:
-  url_launcher: 
+  url_launcher:
+  firebase_core:
+  firebase_messaging:
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +91,7 @@ flutter:
      - assets/png/img_phone.png
      - assets/png/img_casque.png
      - assets/png/img_logo.png
+     - assets/png/img_money.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

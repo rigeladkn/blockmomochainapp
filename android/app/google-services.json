@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "111006955672",
+    "project_id": "blockmomochainapp",
+    "storage_bucket": "blockmomochainapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111006955672:android:30c015315b4af6ec7ef8ed",
+        "android_client_info": {
+          "package_name": "com.example.blockmomochainapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzuLLBtU337ZO9w53JP1F1NM5dxyqnfUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111006955672:android:930d489cc4a9e4557ef8ed",
+        "android_client_info": {
+          "package_name": "com.rig.blockmomochainapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzuLLBtU337ZO9w53JP1F1NM5dxyqnfUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

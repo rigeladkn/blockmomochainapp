@@ -50,4 +50,20 @@ class Helpers {
     reformatedPrice = nmbOfSpace == 0 ?  reformatedPrice : priceS.substring(0, prLength - reformatedPrice.trim().length + k -1) + ' ' + reformatedPrice;
     return reformatedPrice.trimRight();
   }
+
+  static saveFcmToken(token) async {
+    SharedPreferences prefs = await getSharedPrefs();
+    await prefs.setString('fcm_token', token);
+    if(prefs.containsKey('userId')){
+      await saveFmcTokenInDb();
+    }
+  }
+
+  static Future<void> saveFmcTokenInDb() async {
+    SharedPreferences prefs = await getSharedPrefs();
+    var fcm_token = await prefs.getString('fcm_token');
+    var userId = await prefs.getString('userId');
+    log('DATA TO SEND FOR NOTIFICATIONS $userId $fcm_token');
+
+  }
 }

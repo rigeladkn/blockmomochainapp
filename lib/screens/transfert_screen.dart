@@ -144,10 +144,9 @@ class _TransfertScreenState extends State<TransfertScreen> {
   void sendMoney() async {
     Get.back();
     final prefs = await Helpers.getSharedPrefs();
-    // if(prefs!.containsKey('networkStatus')){
-    //   String? status = await prefs.getString('net');
-      // if(status == 'DOWN'){
-      if(true){
+    if(prefs!.containsKey('networkStatus')){
+      String? status = await prefs.getString('networkStatus');
+      if(status == 'DOWN'){
         showModalBottomSheet(context: context,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
             builder: (context){
@@ -182,16 +181,21 @@ class _TransfertScreenState extends State<TransfertScreen> {
                 else{
                   showErrorDialog(response['message']);
                 }
-                
-                
               },isYellowButton: false,),
             ],
           ),);
         });
+     }
+      else{
+        var response = await transfertController.sendMoney();
+        if(response['success']){
+          Get.to(()=>SuccessScreen());
+        }
+        else{
+          showErrorDialog(response['message']);
+        }
       }
-
-
-    // }
+  }
   }
 
   void showErrorDialog(errorMessage) {
