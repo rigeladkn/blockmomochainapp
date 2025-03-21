@@ -40,6 +40,7 @@ class Services {
         log(user.toString());
         prefs.setString('userId', user['id']);
         prefs.setString('phone', user['phone']);
+        prefs.setString('userName', user['name']);
         return data;
       }
       else{
@@ -104,6 +105,34 @@ class Services {
     }
   }
 
+  Future<dynamic> makeWithdraw(receiver,amount) async {
+    var headers =  await getHeaders();
+    log('HEADERS $headers');
+    try{
+      var url = Uri.parse(API_BASE_URL + '/api/transactions');
+      var body = {
+        'receiver' : receiver,
+        'amount' : amount.toString(),
+        'type' : 'WITHDRAW'
+      };
+      var response = await http.post(url,body: body,headers: headers);
+      var data = await jsonDecode(jsonEncode(response.body));
+      log(body.toString());
+      if(response.statusCode == 201 || response.statusCode == 200){
+        log(data.toString());
+        return data;
+      }
+      else{
+        return data;
+      }
+    }
+    catch(e){
+      log('ERROR => $e');
+      return {'success' : false,'message' : "${e}"};
+    }
+  }
+
+  //----------------- OTHERS -------------------------------
   Future<Map<String, String>> getHeaders() async {
     var prefs = await Helpers.getSharedPrefs();
     var token = prefs.getString('token');
@@ -162,6 +191,44 @@ class Services {
     catch(e){
       log('ERROR $e');
       return 0;
+    }
+  }
+
+  getTransactionsStats() async {
+    var data;
+    try{
+      var response = await http.get(Uri.parse(API_BASE_URL + '/api/transactions/stats'),headers: await getHeaders());
+    log(response.body.toString());
+    if(response.statusCode == 200){
+    data = await jsonDecode(response.body);
+    return data;
+    }
+    else if(response.statusCode == 401){
+    log('ERROR NO TOKEN');
+    return {
+      "sentCount": 0,
+      "receivedCount": 0,
+      "sentAmount": 0,
+      "receivedAmount": 0
+    };
+    }
+    else{
+    return {
+      "sentCount": 0,
+      "receivedCount": 0,
+      "sentAmount": 0,
+      "receivedAmount": 0
+    };
+    }
+    }
+    catch(e){
+    log('ERROR $e');
+    return {
+      "sentCount": 0,
+      "receivedCount": 0,
+      "sentAmount": 0,
+      "receivedAmount": 0
+    };
     }
   }
 

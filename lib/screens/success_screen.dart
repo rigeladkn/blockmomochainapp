@@ -20,10 +20,11 @@ class SuccessScreen extends StatelessWidget {
         decoration: BoxDecoration(color: AppColors.primaryColor),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('assets/png/img_logo.png'),
             Icon(Icons.check_circle,color: Colors.white,size: 80,),
-            Text('Transaction effectuée avec succès',style: TextStyle(fontSize: AppStyle.size18,fontWeight: FontWeight.w500,fontFamily: 'MTN Brighter Sans',color: Colors.white),),
+            Text('Transaction effectuée avec succès',textAlign : TextAlign.center,style: TextStyle(fontSize: AppStyle.size18,fontWeight: FontWeight.w500,fontFamily: 'MTN Brighter Sans',color: Colors.white),),
            BmcButtonComponent(isTransparentButton: true, text: 'Terminé', onTap: () { Get.to(()=>HomeScreen()); },)
           ],
         ),

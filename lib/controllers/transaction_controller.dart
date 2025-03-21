@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 class TransactionController extends GetxController{
   List<dynamic> transactions = [];
+  Map<String,dynamic> stats = {};
   // {
   //   'type' : 'TRANSFERT',
   //   'name' : 'HOUNSOU Martunin',
@@ -44,6 +45,15 @@ class TransactionController extends GetxController{
     loading(true);
     log('IN GET TRANSACTIONS');
       transactions = await Services().getUserTransactions();
+    // log('TRANS $trans');
+    // transactions = trans;
+    update();
+    loading(false);
+  }
+
+  Future<void> getStats() async {
+    loading(true);
+    stats = await Services().getTransactionsStats();
     // log('TRANS $trans');
     // transactions = trans;
     update();

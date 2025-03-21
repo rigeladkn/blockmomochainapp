@@ -96,16 +96,17 @@ class _QuizzScreenState extends State<QuizzScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Récompense',style: TextStyle(fontSize: AppStyle.size24,fontWeight: FontWeight.w500,color: Colors.white),),
+                  Text('Récompense',style: TextStyle(fontSize: AppStyle.size20,fontWeight: FontWeight.w700,color: Colors.white),),
                   SizedBox(height: 5,),
-                  Text('1Go de forfait internet',style: TextStyle(fontSize: AppStyle.size13p94,fontWeight: FontWeight.w500,color: Colors.white),),
+                  Text('Gagnez 5000 Fcfa',style: TextStyle(fontSize: AppStyle.size24,fontWeight: FontWeight.w500,color: AppColors.primaryYelloColor),),
                   Spacer(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: List.generate(quizz.length, (index) =>  Container(
-                      padding: EdgeInsets.all(6),
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.only(right: 20),
                       child: Text((index + 1).toString(),style: TextStyle(fontSize: 12,color : currentIndex == index ? Colors.black : Colors.white),),
-                      decoration: BoxDecoration(shape: BoxShape.circle,color: currentIndex == index ? Colors.white : Colors.transparent,border: Border.all(color: Colors.white)),
+                      decoration: BoxDecoration(shape: BoxShape.circle,color: currentIndex == index ? AppColors.primaryYelloColor : Colors.transparent,border: Border.all(color: currentIndex == index ? Colors.transparent : Colors.white)),
                     )),
                   )
                 ],
@@ -122,26 +123,31 @@ class _QuizzScreenState extends State<QuizzScreen> {
                           // SizedBox(height: 20,),
                           Text(quizz[currentIndex]['question'],style: TextStyle(fontSize: AppStyle.size13p94,fontWeight: FontWeight.w700),),
                           SizedBox(height: 25,),
-                          ...List.generate(quizz[currentIndex]['propositions'].length, (index) => Container(
-                            margin: EdgeInsets.only(bottom: 15),
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: AppColors.primaryColor,width: 1.1),
-                                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1),blurRadius: 5)]
-                            ),
-                            child: ListTile(
-                              horizontalTitleGap: 4,
-                              leading: isMultipleResponses[currentIndex] ? Checkbox(value: userChoices[currentIndex][index], onChanged: (bool? value) {
-                                propoIsTapped(index);
-                              },activeColor: AppColors.primaryColor,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),) :
-                              Radio(value: userChoices[currentIndex][index],
-                                activeColor: AppColors.primaryColor,
-                                onChanged: (value){
-                                propoIsTapped(index);
-                              }, groupValue: true,),
-                              title: Text(quizz[currentIndex]['propositions'][index]['content'],style: TextStyle(fontSize: AppStyle.size13p94,fontWeight: FontWeight.w500),),
+                          ...List.generate(quizz[currentIndex]['propositions'].length, (index) => GestureDetector(
+                            onTap: (){
+                              propoIsTapped(index);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: 15),
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: AppColors.primaryColor,width: 1.1),
+                                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1),blurRadius: 5)]
+                              ),
+                              child: ListTile(
+                                horizontalTitleGap: 4,
+                                leading: isMultipleResponses[currentIndex] ? Checkbox(value: userChoices[currentIndex][index], onChanged: (bool? value) {
+                                  propoIsTapped(index);
+                                },activeColor: AppColors.primaryColor,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),) :
+                                Radio(value: userChoices[currentIndex][index],
+                                  activeColor: AppColors.primaryColor,
+                                  onChanged: (value){
+                                  propoIsTapped(index);
+                                }, groupValue: true,),
+                                title: Text(quizz[currentIndex]['propositions'][index]['content'],style: TextStyle(fontSize: AppStyle.size13p94,fontWeight: FontWeight.w500),),
+                              ),
                             ),
                           ),),
                         ]

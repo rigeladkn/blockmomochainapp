@@ -66,4 +66,19 @@ class Helpers {
     log('DATA TO SEND FOR NOTIFICATIONS $userId $fcm_token');
 
   }
+
+  static Future<void> verifiyUserBadge() async {
+    SharedPreferences prefs = await getSharedPrefs();
+    if(!prefs.containsKey('userBadge')){
+      await prefs.setInt('userBadge', 0);
+    }
+  }
+
+  static Future<void> updateUserBadge(value) async {
+    SharedPreferences prefs = await getSharedPrefs();
+    int? oldBadge = await prefs.getInt('userBadge');
+    await prefs.setInt('userBadge', value + oldBadge);
+  }
+
+  static saveUser(response) {}
 }

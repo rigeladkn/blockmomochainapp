@@ -47,6 +47,15 @@ class TransfertController extends GetxController{
     return result;
   }
 
+  Future<Map<String, dynamic>> withdrawMoney() async {
+    loading(true);
+    var result = await Services().makeWithdraw(receiverPhone, amount);//receiver=sender here
+    result = await jsonDecode(result);
+    log('RRR ' + result.toString());
+    loading(false);
+    return result;
+  }
+
   loading(value){
     isLoading = value;
     update();

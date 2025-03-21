@@ -16,7 +16,8 @@ import '../styles/colors.dart';
 import '../styles/style.dart';
 
 class TransfertScreen extends StatefulWidget {
-
+  String? type;
+  TransfertScreen({this.type = 'TRANSFERT'});
   @override
   State<TransfertScreen> createState() => _TransfertScreenState();
 }
@@ -29,14 +30,14 @@ class _TransfertScreenState extends State<TransfertScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BmcAppbarComponent(title : "Envoyer de l'argent",goBack: true,),
+      appBar: BmcAppbarComponent(title : widget.type == 'TRANSFERT' ? "Envoyer de l'argent" : "Lancer un retrait",goBack: true,),
       body: GetBuilder<TransfertController>(
         builder: (TransfertController transfertController) {
           return ListView(
             padding: EdgeInsets.all(20),
             children: [
               // SizedBox(height: 30,),
-              Text('Envoyer de l’argent',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size18,fontFamily: 'MTN Brighter Sans'),),
+              Text(widget.type == 'TRANSFERT' ? "Envoyer de l'argent" : "Lancer un retrait",style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size18,fontFamily: 'MTN Brighter Sans'),),
               SizedBox(height: 15,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -72,7 +73,7 @@ class _TransfertScreenState extends State<TransfertScreen> {
                 }),
               ),
               SizedBox(height: 40,),
-              Text("À qui voulez-vous envoyer de l’argent ?",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
+              Text(widget.type == 'TRANSFERT' ? "À qui voulez-vous envoyer de l’argent ?" : "De qui voulez-vous faire le retrait" ,style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
               SizedBox(height: 7,),
               Row(
                 children: [
@@ -97,13 +98,14 @@ class _TransfertScreenState extends State<TransfertScreen> {
                 ],
               ),
               SizedBox(height: 20,),
-              Text("Vous voulez envoyer combien ?",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
+              Text(widget.type == 'TRANSFERT' ? "Vous voulez envoyer combien ?" : 'Combien voulez-vous retirer ?',style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
               SizedBox(height: 7,),
               BmcInputComponent(isForOperation: true,isAmount : true,onChanged: (value){
                 transfertController.updateAmount(int.parse(value));
               }),
               SizedBox(height: 20,),
-              Text("Entrer la raison de l’envoi",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
+
+              Text(widget.type == 'TRANSFERT' ? "Entrez la raison de l’envoi" : 'Entrez la raison du retrait',style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color),),
               SizedBox(height: 7,),
               BmcInputComponent(isForOperation: true,isReason : true),
               SizedBox(height: 31,),
@@ -122,19 +124,20 @@ class _TransfertScreenState extends State<TransfertScreen> {
   confirmSending() async {
     await showDialog(context: context, builder: (context){
       return AlertDialog(
-        title: Text("Confirmation d'envoi",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color)),
+        title: Text(widget.type == 'TRANSFERT' ? "Confirmation d'envoi" : 'Confirmation de retrait',style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color)),
         content: Container(
           height: 50,
-          child:Text("Confirmez-vous l'envoi de 5Fcfa à Boss ?",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color,height: 1.5),),
+          child: widget.type == 'TRANSFERT' ?
+          Text("Confirmez-vous l'envoi de ${transfertController.amount}Fcfa à XXXXX ?",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color,height: 1.5),) :
+          Text("Confirmez-vous le retrait de ${transfertController.amount}Fcfa du compte de XXXXX ?",style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans',color: AppColors.black1Color,height: 1.5),),
         ),
         actions: [
           TextButton(onPressed: (){
             Get.back();
           }, child: Text('Annuler',style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans',color: AppColors.redColor))),
           TextButton(onPressed: (){
-            sendMoney();
-          }, child: Text('Envoyer',style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans',color: AppColors.primaryColor)))
-
+            widget.type == 'TRANSFERT' ? sendMoney() : withdrawMoney();
+          }, child: Text(widget.type == 'TRANSFERT' ? 'Envoyer' : 'Procéder',style: TextStyle(fontSize: AppStyle.size14,fontWeight: FontWeight.w700,fontFamily: 'MTN Brighter Sans',color: AppColors.primaryColor)))
         ],
       );
     });
@@ -150,39 +153,41 @@ class _TransfertScreenState extends State<TransfertScreen> {
         showModalBottomSheet(context: context,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
             builder: (context){
-          return Container(height: 570,
+          return Container(height: 700,
           padding: EdgeInsets.only(top: 5,right: 15,left: 15,bottom: 15),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-            CircleAvatar(backgroundColor: Colors.white,radius: 15.5,child: CircleAvatar(radius: 10,backgroundColor :  AppColors.redColor.withOpacity(0.3),child: CircleAvatar(radius: 5,backgroundColor : AppColors.redColor),),),
-                  Text('Réseau actuellement hors service !',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size15,fontFamily: 'MTN Brighter Sans',color : AppColors.redColor),),
-                  IconButton(icon : Icon(Icons.close),color: Colors.black.withOpacity(0.5),onPressed: ()=>Get.back())
-                ],
-              ),
-              SizedBox(height: 10,),
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: AppColors.redColor),
-                  color: AppColors.redColor.withOpacity(0.2)
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+              CircleAvatar(backgroundColor: Colors.white,radius: 15.5,child: CircleAvatar(radius: 10,backgroundColor :  AppColors.redColor.withOpacity(0.3),child: CircleAvatar(radius: 5,backgroundColor : AppColors.redColor),),),
+                    Text('Réseau actuellement hors service !',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size12, fontFamily: 'MTN Brighter Sans',color : AppColors.redColor),),
+                    IconButton(icon : Icon(Icons.close),color: Colors.black.withOpacity(0.5),onPressed: ()=>Get.back())
+                  ],
                 ),
-                child: Text("Le service Mobile Money est actuellement hors service. Nous vous présentons nos services et vous rassurons de ce que le réseau sera très vite rétabli. \n\n Si vous êtes dans un cas pressant ou urgent d'envoi vers votre destinataire, vous pourrez toutefois effectuer cette transaction par le biais du réseau BlockMomoChain. Si vous disposez des fonds suffisants, votre transaction sera autorisée. Votre solde Momo sera déduit automatiquement dès que la panne réglée. MTN vous remercie de votre fidélité !",style: TextStyle(fontSize: AppStyle.size13,fontWeight: FontWeight.w400,height : 1.5,fontFamily: 'Robotto',color: AppColors.marronColor),),
-              ),
-              SizedBox(height: 15,),
-              BmcButtonComponent(text: 'Accepter et continuer', onTap: () async {
-                var response = await transfertController.sendMoney();
-                if(response['success']){
-                  Get.to(()=>SuccessScreen());
-                }
-                else{
-                  showErrorDialog(response['message']);
-                }
-              },isYellowButton: false,),
-            ],
+                SizedBox(height: 10,),
+                Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: AppColors.redColor),
+                    color: AppColors.redColor.withOpacity(0.2)
+                  ),
+                  child: Text("Nous vous présentons nos services et vous rassurons de ce que le réseau sera très vite rétabli. \n\n Si vous êtes dans un cas pressant ou urgent d'envoi vers votre destinataire, vous pourrez toutefois effectuer cette transaction par le biais du réseau BlockMomoChain. Si vous disposez des fonds suffisants, votre transaction sera autorisée. Votre solde Momo sera déduit automatiquement dès que la panne réglée. MTN vous remercie de votre fidélité !",style: TextStyle(fontSize: AppStyle.size13,fontWeight: FontWeight.w400,height : 1.5,fontFamily: 'Robotto',color: AppColors.marronColor),),
+                ),
+                SizedBox(height: 10,),
+                BmcButtonComponent(text: 'Accepter et continuer', onTap: () async {
+                  var response = await transfertController.sendMoney();
+                  if(response['success']){
+                    Get.to(()=>SuccessScreen());
+                  }
+                  else{
+                    showErrorDialog(response['message']);
+                  }
+                },isYellowButton: false,),
+              ],
+            ),
           ),);
         });
      }
@@ -198,6 +203,63 @@ class _TransfertScreenState extends State<TransfertScreen> {
   }
   }
 
+  void withdrawMoney() async {
+    Get.back();
+    final prefs = await Helpers.getSharedPrefs();
+    if(prefs!.containsKey('networkStatus')){
+      String? status = await prefs.getString('networkStatus');
+      if(status == 'DOWN'){
+        showModalBottomSheet(context: context,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+            builder: (context){
+              return Container(height: 570,
+                padding: EdgeInsets.only(top: 5,right: 15,left: 15,bottom: 15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleAvatar(backgroundColor: Colors.white,radius: 15.5,child: CircleAvatar(radius: 10,backgroundColor :  AppColors.redColor.withOpacity(0.3),child: CircleAvatar(radius: 5,backgroundColor : AppColors.redColor),),),
+                        Text('Réseau actuellement hors service !',style: TextStyle(fontWeight: FontWeight.w500,fontSize : AppStyle.size15,fontFamily: 'MTN Brighter Sans',color : AppColors.redColor),),
+                        IconButton(icon : Icon(Icons.close),color: Colors.black.withOpacity(0.5),onPressed: ()=>Get.back())
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: AppColors.redColor),
+                          color: AppColors.redColor.withOpacity(0.2)
+                      ),
+                      child: Text("Le service Mobile Money est actuellement hors service. Nous vous présentons nos services et vous rassurons de ce que le réseau sera très vite rétabli. \n\n Si vous êtes dans un cas pressant ou urgent de retrait, vous pourrez toutefois effectuer cette transaction par le biais du réseau BlockMomoChain. Si vous disposez des fonds suffisants, votre transaction sera autorisée. Votre solde Momo sera déduit automatiquement dès que la panne réglée. MTN vous remercie de votre fidélité !",style: TextStyle(fontSize: AppStyle.size13,fontWeight: FontWeight.w400,height : 1.5,fontFamily: 'Robotto',color: AppColors.marronColor),),
+                    ),
+                    SizedBox(height: 15,),
+                    BmcButtonComponent(text: 'Accepter et continuer', onTap: () async {
+                      var response = await transfertController.withdrawMoney();
+                      if(response['success']){
+                        Get.to(()=>SuccessScreen());
+                      }
+                      else{
+                        showErrorDialog(response['message']);
+                      }
+                    },isYellowButton: false,),
+                  ],
+                ),);
+            });
+      }
+      else{
+        var response = await transfertController.withdrawMoney();
+        if(response['success']){
+          Get.to(()=>SuccessScreen());
+        }
+        else{
+          showErrorDialog(response['message']);
+        }
+      }
+    }
+  }
+
   void showErrorDialog(errorMessage) {
     showDialog(context: context, builder: (context){
       return AlertDialog(
@@ -206,4 +268,6 @@ class _TransfertScreenState extends State<TransfertScreen> {
     });
     
   }
+
+
 }

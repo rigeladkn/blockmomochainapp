@@ -39,14 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   void setNetworkStatus() {
-    Timer.periodic(Duration(seconds: 8), (timer) async {
-    // Future.delayed(Duration.zero,() async {
+    Future.delayed(Duration.zero,() async {
       await networkController.getNetworkStatus();
-    // });
     });
+    // Timer.periodic(Duration(seconds: 40), (timer) async {
+    // Future.delayed(Duration.zero,() async {
+    //   await networkController.getNetworkStatus();
+    // });
+    // });
   }
-
-
 
   void getUserBalance(){
     userController.getUserBalance();
@@ -67,31 +68,36 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           appBar: navigationController.currentIndex == 0 ? BmcAppbarComponent(isHome: true,) : null,
           bottomNavigationBar: BmcBottomNavigationBar(),
-          floatingActionButton: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.3,0.5,0.9],
-                    colors: [
-                      AppColors.primColor.withOpacity(0.7),
-                      AppColors.primColor.withOpacity(0.2),
-                      Colors.white,
-                    ]
-                  )
+          floatingActionButton: GestureDetector(
+            onTap: (){
+              Get.to(()=>TransfertScreen(type : 'WITHDRAW'));
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.3,0.5,0.9],
+                      colors: [
+                        AppColors.primColor.withOpacity(0.7),
+                        AppColors.primColor.withOpacity(0.2),
+                        Colors.white,
+                      ]
+                    )
+                  ),
                 ),
-              ),
-              CircleAvatar(child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: SvgPicture.asset('assets/svg/ic_logo.svg'),
-              ),backgroundColor: AppColors.primaryColor,radius: 25.8,),
-            ],
+                CircleAvatar(child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: SvgPicture.asset('assets/svg/ic_logo.svg'),
+                ),backgroundColor: AppColors.primaryColor,radius: 25.8,),
+              ],
+            ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           body:  navigationController.currentIndex == 1 ? NotificationScreen() : navigationController.currentIndex == 2 ? JournalScreen() : navigationController.currentIndex == 3 ? RecompenseScreen() : SingleChildScrollView(
@@ -137,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Dernière transaction',style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
+                                Text('Dernière trans.',style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),),
                                 GetBuilder<TransactionController>(builder: (TransactionController transactionController){
                                   return !transactionController.isLoading && transactionController.transactions.length > 0  ? Text(Helpers.formatDate(transactionController.transactions[0]["createdAt"]),style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'MTN Brighter Sans'),) : Text('') ;
                                 }),
@@ -199,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(10.0,15,10,5),
-                                child: Text("Envoyer à un non abonné mobile money",textAlign : TextAlign.center,style: TextStyle(fontWeight: FontWeight.w400,fontSize : AppStyle.size12,height : 1.5,fontFamily: 'MTN Brighter Sans'),),
+                                child: Text("Envoyer à un non abonné Momo",textAlign : TextAlign.center,style: TextStyle(fontWeight: FontWeight.w400,fontSize : AppStyle.size12,height : 1.5,fontFamily: 'MTN Brighter Sans'),),
                               ),
                             ],
                           )),

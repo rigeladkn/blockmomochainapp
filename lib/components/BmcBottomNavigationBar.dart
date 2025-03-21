@@ -32,7 +32,7 @@ class _BmcBottomNavigationBarState extends State<BmcBottomNavigationBar> {
             navigationController.setCurrentIndex(index);
           },
           items: [
-            BottomNavigationBarItem(icon: SvgPicture.asset('assets/svg/ic_home.svg',color: navigationController.currentIndex == 0 ? AppColors.primaryColor : Colors.grey,),label: 'Dashboard',),
+            BottomNavigationBarItem(icon: SvgPicture.asset('assets/svg/ic_home.svg',color: navigationController.currentIndex == 0 ? AppColors.primaryColor : Colors.grey,),label: 'Accueil',),
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/svg/ic_notification.svg',color: navigationController.currentIndex == 1 ? AppColors.primaryColor : Colors.grey,),label: 'Notifications',),
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/svg/ic_journal.svg',color: navigationController.currentIndex == 2 ? AppColors.primaryColor : Colors.grey,),label: 'Journal',),
             BottomNavigationBarItem(icon: SvgPicture.asset('assets/svg/ic_recompense.svg',color: navigationController.currentIndex == 3 ? AppColors.primaryColor : Colors.grey,),label: 'Récompenses',),
